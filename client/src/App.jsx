@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Post from "./components/post";
-import { createComment, createPost, getComments, getPosts } from "./api"
+import { createComment, createPost, getPosts } from "./api"
 
 const App = () => {
 
   const [title, setTitle] = useState("")
 
   const [posts, setPosts] = useState([]);
-
-  const [comments, setComments] = useState({});
 
   const addComment = async (postId, content) => {
     try {
@@ -24,10 +22,9 @@ const App = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data:postData } = await getPosts()
-        const { data:commentData } = await getComments()
-        setPosts(postData.reverse())
-        setComments(commentData)
+        const { data } = await getPosts()
+        setPosts(Object.values(data.posts) || [])
+
       } catch (error) {
         console.log(error);
         alert("could not fetch posts or comments")
@@ -64,11 +61,10 @@ const App = () => {
 
       {/* all posts */}
       <div className="posts">
-        {posts.map((post) => (
+        {posts.reverse().map((post) => (
           <Post
             key={post.id}
             post={post}
-            comments={comments[post.id] || []}
             addComment={addComment}
           />
         ))}

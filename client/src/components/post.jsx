@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Post = ({ post, comments, addComment }) => {
+const Post = ({ post, addComment }) => {
     const [newComment, setNewComment] = useState("");
 
     const handleCommentChange = (e) => setNewComment(e.target.value);
@@ -20,11 +20,11 @@ const Post = ({ post, comments, addComment }) => {
 
             <div className="comments-section">
                 <h3>Comments:</h3>
-                {comments.length === 0 ? (
+                {post.comments.length === 0 ? (
                     <p>No comments yet.</p>
                 ) : (
                     <ul>
-                        {comments.map((comment, index) => (
+                        {post.comments.map((comment, index) => (
                             <li key={index}>{comment.content}</li>
                         ))}
                     </ul>
