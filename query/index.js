@@ -18,21 +18,32 @@ app.post("/api/events", (req, res) => {
         const { id, title } = data
 
         posts[id] = { id, title, comments: [] }
-        console.log("post created");
     }
 
     else if (type === "CommentCreated") {
-        const { id, content, postId } = data
+        const { id, content, postId, status } = data
 
-        posts[postId].comments.push({ id, content })
-        console.log("comment created");
+        posts[postId].comments.push({ id, content, status })
     }
 
-    console.log(posts);
+    else if (type === "CommentUpdated") {
+        const { id, content, postId, status } = data
+
+        const comment = posts[postId].comments.find(c => c.id === id)
+
+        comment.status = status;
+        comment.content = content;
+    }
+
     return res.status(200).send({ status: "OK" })
 })
 
 app.get("/api/posts", (req, res) => {
+    // Object.values(posts).map(p => {
+    //     if (p.comments && p.comments.length) {
+    //         console.log(p.comments);
+    //     }
+    // })
     return res.status(200).send({ posts })
 })
 

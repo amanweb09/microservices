@@ -25,7 +25,13 @@ const Post = ({ post, addComment }) => {
                 ) : (
                     <ul>
                         {post.comments.map((comment, index) => (
-                            <li key={index}>{comment.content}</li>
+                            comment.status == "pending" ?
+                                <li className="italic" key={index}>The comment is awaiting moderation</li>
+                                :
+                                comment.status == "rejected" ?
+                                    <li className="italic" key={index}>The comment has been rejected</li>
+                                    :
+                                    <li key={index}>{comment.content}</li>
                         ))}
                     </ul>
                 )}

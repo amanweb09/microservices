@@ -14,7 +14,11 @@ const comments = {}
 app.post("/api/comments/:postId", async (req, res) => {
 
     const commentId = randomBytes(4).toString("hex")
-    const comment = { id: commentId, content: req.body.content }
+    const comment = {
+        id: commentId,
+        content: req.body.content,
+        status: "pending"
+    }
 
     const postId = req.params.postId
 
@@ -29,12 +33,12 @@ app.post("/api/comments/:postId", async (req, res) => {
             }
         })
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return res.status(500).send("Server error on comments service")
     }
 
 
-    return res.status(201).send(comment)
+    return res.status(201).send(comment);
 })
 
 app.get("/api/comments/:postId", (req, res) => {
@@ -45,8 +49,35 @@ app.get("/api/comments", (req, res) => {
     return res.status(200).send(comments)
 })
 
-app.post("/api/events", (req, res) => {
+app.post("/api/events", async (req, res) => {
     console.log("received event: ", req.body.type);
+
+    const { type, data } = req.body
+
+    if (type === "CommentModerated") {
+        const { id, status, postId, content } = data
+
+        const comment = comments[postId].find(c => c.id === id)
+
+        if (!comment) return res.send({})
+
+        comment.status = status
+
+        try {
+            await axios.post("http://localhost:4005/api/events", {
+                type: "CommentUpdated",
+                data: {
+                    id,
+                    postId,
+                    status,
+                    content
+                }
+            })
+        } catch (error) {
+            console.log(error.data.message);
+            return res.status(500).send("Server error on moderation service")
+        }
+    }
 
     return res.status(200).send({})
 })

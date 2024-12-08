@@ -24,6 +24,7 @@ const App = () => {
       try {
         const { data } = await getPosts()
         setPosts(Object.values(data.posts) || [])
+        console.log(data);
 
       } catch (error) {
         console.log(error);

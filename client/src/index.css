@@ -69,3 +69,8 @@ form button {
 form button:hover {
   background-color: #0056b3;
 }
+
+.italic {
+  font-style: italic;
+  color: gray;
+}
