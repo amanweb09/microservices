@@ -22,7 +22,7 @@ app.post("/api/posts", async (req, res) => {
             data: post
         })
     } catch (error) {
-        console.log(error);
+        console.log(error.response.data);
         return res.status(500).send("Server error")
     }
 

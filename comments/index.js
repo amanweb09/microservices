@@ -41,16 +41,17 @@ app.post("/api/comments/:postId", async (req, res) => {
     return res.status(201).send(comment);
 })
 
-app.get("/api/comments/:postId", (req, res) => {
-    return res.status(200).send(comments[req.params.postId])
-})
+// *** NO LONGER NEEDED ***
+// app.get("/api/comments/:postId", (req, res) => {
+//     return res.status(200).send(comments[req.params.postId])
+// })
 
-app.get("/api/comments", (req, res) => {
-    return res.status(200).send(comments)
-})
+// *** NO LONGER NEEDED ***
+// app.get("/api/comments", (req, res) => {
+//     return res.status(200).send(comments)
+// })
 
 app.post("/api/events", async (req, res) => {
-    console.log("received event: ", req.body.type);
 
     const { type, data } = req.body
 

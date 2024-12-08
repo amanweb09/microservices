@@ -18,5 +18,4 @@ const queryApi = axios.create({
 export const getPosts = async () => await queryApi.get("/api/posts")
 
 export const createPost = async (title) => await postApi.post("/api/posts", { title })
-export const getComments = async (postId) => await commentApi.get(`/api/comments`)
 export const createComment = async (postId, content) => await commentApi.post(`/api/comments/${postId}`, { content })

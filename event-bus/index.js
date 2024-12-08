@@ -8,9 +8,13 @@ app.use(require("cors")({
 }))
 app.use(express.json())
 
+const events = []
+
 app.post("/api/events", async (req, res) => {
 
     const event = req.body
+
+    events.push(event)
 
     try {
         await axios.post("http://localhost:4000/api/events", event)
@@ -23,6 +27,10 @@ app.post("/api/events", async (req, res) => {
     } catch (error) {
         return res.status(500).send("server err on event bus")
     }
+})
+
+app.get("/api/events", (req, res) => {
+    return res.status(200).send(events)
 })
 
 app.listen(4005, () => console.log("event bus running on port 4005..."))
