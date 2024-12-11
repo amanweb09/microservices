@@ -1,0 +1,9 @@
+# base image
+FROM alpine
+
+# install dependencies when we are building the image
+RUN apk add --update redis
+RUN apk add --update gcc
+
+# what to do when container starts i.e. override primary command
+CMD ["redis-server"]
